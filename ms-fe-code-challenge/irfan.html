@@ -6,20 +6,43 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        .panel-expand {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+            float: right;
+            cursor: pointer;
+            content: "\e159";
+        }
+        .panel{
+            margin-top:5px;
+        }
+        .panel-expand:focus, .panel-expand:hover {
+            text-decoration: none;
+        }
+
+        .panel-expand.collapsed:before {
+            content: "\e158";
+        }
+    </style>
 </head>
 <body>
 
     <div class="container">
         <h2>Tweets</h2>
         <div class="panel-group">
-           
+
             <div class="col-md-12">
                 <div class="col-md-4">
                     <div class="panel panel-primary">
-                        <div class="panel-heading">@MakeSchool</div>
-                        <div class="panel-body">
+                        <div class="panel-heading">
+                            @MakeSchool
+                            <a class="glyphicon glyphicon-collapse-down panel-expand" data-toggle="collapse" data-parent="#accordion" href="#collapse2"></a>
+                        </div>
+                        <div id="collapse2" class="panel-body panel-collapse collapse in">
                             <table class="table table-responsive">
-                              
+
                                 <tbody id="make-school-body"></tbody>
                             </table>
                         </div>
@@ -28,10 +51,13 @@
 
                 <div class="col-md-4">
                     <div class="panel panel-success">
-                        <div class="panel-heading">@newsycombinator</div>
-                        <div class="panel-body">
+                        <div class="panel-heading">
+                            @newsycombinator
+                            <a class="glyphicon glyphicon-collapse-down panel-expand" data-toggle="collapse" data-parent="#accordion" href="#collapse3"></a>
+                        </div>
+                        <div id="collapse3" class="panel-body panel-collapse collapse in">
                             <table class="table table-responsive">
-                              
+
                                 <tbody id="newsycombinator-body"></tbody>
                             </table>
                         </div>
@@ -39,26 +65,29 @@
                 </div>
                 <div class="col-md-4">
                     <div class="panel panel-info">
-                        <div class="panel-heading">@ycombinator</div>
-                        <div class="panel-body">
+                        <div class="panel-heading">
+                            @ycombinator
+                            <a class="glyphicon glyphicon-collapse-down panel-expand" data-toggle="collapse" data-parent="#accordion" href="#collapse1"></a>
+                        </div>
+                        <div id="collapse1" class="panel-body panel-collapse collapse in">
                             <table class="table table-responsive">
-                             
+
                                 <tbody id="ycombinator-body"></tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-            
 
-            
 
-           
 
-           
+
+
+
+
         </div>
     </div>
-   
+
 
     <script>
         $(document).ready(function () {
@@ -66,7 +95,7 @@
             PopulateContent("newsycombinator", "newsycombinator-body");
             PopulateContent("ycombinator", "ycombinator-body");
 
-            function PopulateContent(searchString ,contentId){
+            function PopulateContent(searchString, contentId) {
                 $.ajax({
                     url: 'http://localhost:7890/1.1/statuses/user_timeline.json?count=30&screen_name=' + searchString,
                     success: function (json) {
@@ -80,8 +109,8 @@
                     }
                 });
             }
-            
-           
+
+
 
         });
     </script>
