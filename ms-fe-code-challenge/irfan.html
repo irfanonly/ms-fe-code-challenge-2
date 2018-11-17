@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Tweets</h2>
+        <div class="panel-group">
+           
+            <div class="col-md-12">
+                <div class="col-md-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">@MakeSchool</div>
+                        <div class="panel-body">
+                            <table class="table table-responsive">
+                              
+                                <tbody id="make-school-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">@newsycombinator</div>
+                        <div class="panel-body">
+                            <table class="table table-responsive">
+                              
+                                <tbody id="newsycombinator-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">@ycombinator</div>
+                        <div class="panel-body">
+                            <table class="table table-responsive">
+                             
+                                <tbody id="ycombinator-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+            
+
+           
+
+           
+        </div>
+    </div>
+   
+
+    <script>
+        $(document).ready(function () {
+            PopulateContent("makeschool", "make-school-body");
+            PopulateContent("newsycombinator", "newsycombinator-body");
+            PopulateContent("ycombinator", "ycombinator-body");
+
+            function PopulateContent(searchString ,contentId){
+                $.ajax({
+                    url: 'http://localhost:7890/1.1/statuses/user_timeline.json?count=30&screen_name=' + searchString,
+                    success: function (json) {
+                        var records = JSON.parse(json);
+
+                        for (var i = 0; i < records.length; i++) {
+                            $('#' + contentId).append('<tr><td>' + records[i].text + '</td></tr >');
+                        }
+                    }, error: function (json) {
+                        alert('error');
+                    }
+                });
+            }
+            
+           
+
+        });
+    </script>
+</body>
+
+</html>
