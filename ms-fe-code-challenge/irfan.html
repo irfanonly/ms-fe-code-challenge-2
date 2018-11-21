@@ -31,6 +31,30 @@
         .panel-expand.collapsed:before {
             content: "\e158";
         }
+
+        .td_button{
+            margin-right:5px;
+        }
+        .td_button span{
+            padding-right:10px;
+        }
+        .td_content_header {
+            background-color: #e6ecf0;
+            padding: 2px;
+        }
+        .td_content_header a{
+            float:left;
+            cursor:pointer;
+        }
+        .popover-title {
+            color: blue;
+            font-size: 15px;
+        }
+
+        .popover-content {
+            color: red;
+            font-size: 10px;
+        }
     </style>
 </head>
 <body>
@@ -108,12 +132,27 @@
                         var records = JSON.parse(json);
 
                         for (var i = 0; i < records.length; i++) {
+                            var reweeters = '<b>No users found<b>';
+                            var usermentions = '<b>No users found<b>';
+                            if (records[i].retweet_count > 0) {
+                                reweeters = '<b>Extract the tweeters<b>'
+                            }
+                            if (records[i].entities.user_mentions.length > 0) {
+                                usermentions = '<b>Extract the users<b>'
+                            }
                             var link = 
                                 $('#' + contentId).append('<tr><td class="td_content"><div class="td_content_header">'
                                     + FormatDate(records[i].created_at)
-                                    + ('<a style="float:right" target="_blank" href="https://twitter.com/statuses/' + records[i].id_str  + '">'
-                                    + 'Watch on twitter'  + '</a>') + '</div>' + urlify(records[i].text) + '</td></tr >');
+                                    + ('<a style="float:right" target="_blank" title="Watch on twitter" href="https://twitter.com/statuses/' + records[i].id_str + '"><span class="glyphicon glyphicon-new-window"></span>'
+                                    + '' + '</a>') + '</div>' + urlify(records[i].text)
+                                    + '<div><button type="button" class="btn btn-info btn-sm td_button" data-html="true" data-toggle="popover" data-trigger="hover" title="<b>Retweets</b>" data-placement="bottom"  data-content="<div>' + reweeters + '</div>"><span class="glyphicon glyphicon-retweet"></span>'
+                                    + records[i].retweet_count + '</button><button type="button" class="btn btn-warning btn-sm td_button" data-html="true" data-toggle="popover" data-trigger="hover" data-placement="bottom" title="<b>Mentions</b>"  data-content="<div>' + usermentions + '</div>"><span class="glyphicon glyphicon-user"></span>'
+                                    + records[i].entities.user_mentions.length + '</button></div></td></tr >');
+
+                            
                         }
+
+                        $("[data-toggle=popover]").popover();
                     }, error: function (json) {
                         alert('error');
                     }
