@@ -10,9 +10,11 @@
         body {
             background-color: #e6ecf0;
         }
+
         .tr_content {
-            border-top:none;
+            border-top: none;
         }
+
         .panel-expand {
             color: #f5c383;
             text-decoration: none;
@@ -21,9 +23,11 @@
             cursor: pointer;
             content: "\e159";
         }
-        .panel{
-            margin-top:5px;
+
+        .panel {
+            margin-top: 5px;
         }
+
         .panel-expand:focus, .panel-expand:hover {
             text-decoration: none;
         }
@@ -32,20 +36,24 @@
             content: "\e158";
         }
 
-        .td_button{
-            margin-right:5px;
+        .td_button {
+            margin-right: 5px;
         }
-        .td_button span{
-            padding-right:10px;
-        }
+
+            .td_button span {
+                padding-right: 10px;
+            }
+
         .td_content_header {
             background-color: #e6ecf0;
             padding: 2px;
         }
-        .td_content_header a{
-            float:left;
-            cursor:pointer;
-        }
+
+            .td_content_header a {
+                float: left;
+                cursor: pointer;
+            }
+
         .popover-title {
             color: blue;
             font-size: 15px;
@@ -55,6 +63,13 @@
             color: red;
             font-size: 10px;
         }
+
+            .popover-content div ul {
+                color: green;
+                list-style-type: none;
+                padding: 0px;
+                font-weight: bolder;
+            }
     </style>
 </head>
 <body>
@@ -137,19 +152,25 @@
                             if (records[i].retweet_count > 0) {
                                 reweeters = '<b>Extract the tweeters<b>'
                             }
-                            if (records[i].entities.user_mentions.length > 0) {
-                                usermentions = '<b>Extract the users<b>'
+                            var user_mentiondetails = records[i].entities.user_mentions;
+                            if (user_mentiondetails.length > 0) {
+                                usermentions = '<ul>';
+                                for (var j = 0; j < user_mentiondetails.length; j++) {
+                                    usermentions += '<li>' + user_mentiondetails[j].name + '</li>'
+                                    //console.log(user_mentiondetails[j].name);
+                                }
+                                usermentions += '</ul>';
                             }
-                            var link = 
+                            var link =
                                 $('#' + contentId).append('<tr><td class="td_content"><div class="td_content_header">'
                                     + FormatDate(records[i].created_at)
                                     + ('<a style="float:right" target="_blank" title="Watch on twitter" href="https://twitter.com/statuses/' + records[i].id_str + '"><span class="glyphicon glyphicon-new-window"></span>'
-                                    + '' + '</a>') + '</div>' + urlify(records[i].text)
+                                        + '' + '</a>') + '</div>' + urlify(records[i].text)
                                     + '<div><button type="button" class="btn btn-info btn-sm td_button" data-html="true" data-toggle="popover" data-trigger="hover" title="<b>Retweets</b>" data-placement="bottom"  data-content="<div>' + reweeters + '</div>"><span class="glyphicon glyphicon-retweet"></span>'
-                                    + records[i].retweet_count + '</button><button type="button" class="btn btn-warning btn-sm td_button" data-html="true" data-toggle="popover" data-trigger="hover" data-placement="bottom" title="<b>Mentions</b>"  data-content="<div>' + usermentions + '</div>"><span class="glyphicon glyphicon-user"></span>'
+                                    + records[i].retweet_count + '</button><button type="button" class="btn btn-warning btn-sm td_button" data-html="true" data-toggle="popover" data-trigger="click" data-placement="bottom" title="<b>Mentions</b>"  data-content="<div>' + usermentions + '</div>"><span class="glyphicon glyphicon-user"></span>'
                                     + records[i].entities.user_mentions.length + '</button></div></td></tr >');
 
-                            
+
                         }
 
                         $("[data-toggle=popover]").popover();
@@ -161,7 +182,7 @@
 
 
             function FormatDate(stringDate) {
-                var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov', 'Dec'];
+                var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
                 var dateObj = new Date(stringDate);
                 var date = dateObj.getDate();
                 var month = months[dateObj.getMonth() + 1];
@@ -169,7 +190,7 @@
 
                 var currentYear = (new Date()).getFullYear();
 
-                return month + ' ' + date + ' ' + (currentYear == year ? '' : year) ;
+                return month + ' ' + date + ' ' + (currentYear == year ? '' : year);
             }
 
             function urlify(text) {
